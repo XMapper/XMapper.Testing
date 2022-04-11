@@ -20,7 +20,7 @@ public static class AssertXMapper
     /// </summary>
     /// <param name="assemblyNames">What is the C# project's display name?</param>
     /// <exception cref="Exception">Throws at the first assembly that is not found or at the first invalid XMapper found.</exception>
-    public static void AllAreValidInAssemblies(string[] assemblyNames)
+    public static void AllAreValidInAssemblies(params string[] assemblyNames)
     {
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         foreach (var assemblyName in assemblyNames)
@@ -35,7 +35,7 @@ public static class AssertXMapper
     /// <summary>
     /// In case you don't want to use <see cref="AllAreValidInAssemblies(string[])"/>, you can load and pass assemblies to this method.
     /// </summary>
-    public static void AllAreValidInAssemblies(Assembly[] assemblies)
+    public static void AllAreValidInAssemblies(params Assembly[] assemblies)
     {
         foreach (var assembly in assemblies)
         {

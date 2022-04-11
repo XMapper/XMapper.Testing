@@ -7,7 +7,7 @@ Available via NuGet.
 
 ## Example
 
-1. Define your XMapper mappers as static fields or static properties:
+1. Define your mappers as static fields or static properties:
 ```csharp
 using XMapper;
 
@@ -31,7 +31,7 @@ public class DummyB
 }
 ```
 
-2. Test all mappers via a single AssertXMapper method call inside a unit test:
+2. Test all mappers via a single method call inside a unit test:
 ```csharp
 using XMapper.Testing;
 using Xunit;
