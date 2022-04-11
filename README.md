@@ -1,9 +1,12 @@
 # XMapper.Testing
-Automate the testing of all your object-to-object mappers with one line of unit test code
+Automate the testing of all your object-to-object mappers with one line of unit test code.
 <p align="center">
     <img src="https://avatars.githubusercontent.com/u/103217522?s=150&v=4" alt="XMapper logo"/>
 </p>
+
 Available via NuGet.
+
+For more information about creating and using a mapper, see [XMapper](https://github.com/XMapper/XMapper).
 
 ## Example
 
