@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Authors>XMapper</Authors>
+    <Company>XMapper</Company>
+    <Description>Automate the testing of all your object-to-object mappers with one line of unit test code</Description>
+    <PackageIcon>X.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/XMapper/XMapper.Testing</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/XMapper</PackageProjectUrl>
+    <PackageTags>automapper; Mapster; XMapper; object; mapper; object-to-object; objects; property; properties; member; members; mapping; c#; .net; test; tests; testing; unit; XMapper.Test; XMapper.Tests; XMapper.Testing</PackageTags>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\X.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="XMapper" Version="1.0.1" />
+  </ItemGroup>
+
+</Project>

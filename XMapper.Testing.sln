@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XMapper.Testing", "XMapper.Testing\XMapper.Testing.csproj", "{B54ED2AB-B6C9-49A6-8768-24F626B0B5C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{22BABC6B-9DFE-42EA-9AE7-3361699E2B31}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XMapper.Testing.Tests", "XMapper.Testing.Tests\XMapper.Testing.Tests.csproj", "{D305F4FE-AED7-4A65-B89D-8278BFCAEED3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4A973582-CEBB-4DF7-8357-3D3D12051F20} = {4A973582-CEBB-4DF7-8357-3D3D12051F20}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DummyAssembliesForTests", "DummyAssembliesForTests", "{36363602-1A71-4B7C-A1CA-3EA8DA7C6F98}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DummyAssembly1", "DummyAssembliesForTests\DummyAssembly1\DummyAssembly1.csproj", "{4A973582-CEBB-4DF7-8357-3D3D12051F20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyAssembly2", "DummyAssembliesForTests\DummyAssembly2\DummyAssembly2.csproj", "{66A1559C-A17E-447C-AA02-A078B66CAEF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyAssembly3", "DummyAssembliesForTests\DummyAssembly3\DummyAssembly3.csproj", "{C18686F3-E094-4BDD-ADF0-8362B03F9736}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B54ED2AB-B6C9-49A6-8768-24F626B0B5C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B54ED2AB-B6C9-49A6-8768-24F626B0B5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B54ED2AB-B6C9-49A6-8768-24F626B0B5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B54ED2AB-B6C9-49A6-8768-24F626B0B5C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D305F4FE-AED7-4A65-B89D-8278BFCAEED3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D305F4FE-AED7-4A65-B89D-8278BFCAEED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D305F4FE-AED7-4A65-B89D-8278BFCAEED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D305F4FE-AED7-4A65-B89D-8278BFCAEED3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A973582-CEBB-4DF7-8357-3D3D12051F20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A973582-CEBB-4DF7-8357-3D3D12051F20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A973582-CEBB-4DF7-8357-3D3D12051F20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A973582-CEBB-4DF7-8357-3D3D12051F20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66A1559C-A17E-447C-AA02-A078B66CAEF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66A1559C-A17E-447C-AA02-A078B66CAEF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66A1559C-A17E-447C-AA02-A078B66CAEF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66A1559C-A17E-447C-AA02-A078B66CAEF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C18686F3-E094-4BDD-ADF0-8362B03F9736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C18686F3-E094-4BDD-ADF0-8362B03F9736}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C18686F3-E094-4BDD-ADF0-8362B03F9736}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C18686F3-E094-4BDD-ADF0-8362B03F9736}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4A973582-CEBB-4DF7-8357-3D3D12051F20} = {36363602-1A71-4B7C-A1CA-3EA8DA7C6F98}
+		{66A1559C-A17E-447C-AA02-A078B66CAEF6} = {36363602-1A71-4B7C-A1CA-3EA8DA7C6F98}
+		{C18686F3-E094-4BDD-ADF0-8362B03F9736} = {36363602-1A71-4B7C-A1CA-3EA8DA7C6F98}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {34451791-68FC-4E49-8AD7-90007568DDE7}
+	EndGlobalSection
+EndGlobal
