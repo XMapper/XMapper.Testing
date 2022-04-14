@@ -22,7 +22,7 @@ public class ReferenceTypeMemberNullCaseNotTakenIntoAccountTests
             var mXm = new XMapper<Member, Member>(PropertyList.Target);
             var mapper = new XMapper<Dummy1, Dummy1>(PropertyList.Target)
                 .IncludeAction((source, target) => mXm.Map(source.Member!, target.Member!));
-            mapper.IsValid();
+            mapper.IsValid(TestCases.All);
         });
     }
 
@@ -42,6 +42,6 @@ public class ReferenceTypeMemberNullCaseNotTakenIntoAccountTests
                     mXm.Map(source.Member!, target.Member ??= new());
                 }
             });
-        Does.NotThrow(mapper.IsValid);
+        Does.NotThrow(() => mapper.IsValid(TestCases.All));
     }
 }

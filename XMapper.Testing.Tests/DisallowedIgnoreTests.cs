@@ -21,7 +21,7 @@ public class DisallowedIgnoreTests
         Assert.Throws<Exception>(() =>
             new XMapper<DummyA, DummyB>(PropertyList.Target)
                 .IgnoreSourceProperty(x => x.XStringA)
-                .IsValid());
+                .IsValid(TestCases.AppDefaults));
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class DisallowedIgnoreTests
         Assert.Throws<Exception>(() =>
             new XMapper<DummyA, DummyB>(PropertyList.Source)
                 .IgnoreTargetProperty(x => x.XStringA)
-                .IsValid());
+                .IsValid(TestCases.AppDefaults));
     }
 
     [Theory]
@@ -40,7 +40,7 @@ public class DisallowedIgnoreTests
     {
         Does.NotThrow(() =>
             new XMapper<DummyA, DummyB>(propertyList)
-            .IsValid());
+            .IsValid(TestCases.AppDefaults));
     }
 }
 

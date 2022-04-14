@@ -44,7 +44,7 @@ public class MyXMapperTests
     [Fact]
     public void AllAreValid()
     {
-        AssertXMapper.AllAreValidInAssembly("DummyAssembly1"));
+        AssertXMapper.AllAreValidInAssembly("DummyAssembly1", TestCases.All);
     }
 }
 
@@ -57,18 +57,19 @@ using XMapper.Testing;
 
 // and inside a unit test method, call one of these:
 
-AssertXMapper.AllAreValidInAssembly("Project1"));
+AssertXMapper.AllAreValidInAssembly("Project1", TestCases.All);
 
-AssertXMapper.AllAreValidInAssemblies("MyProject1", "MyProject2");
+AssertXMapper.AllAreValidInAssemblies(new [] { "MyProject1", "MyProject2" }, TestCases.All);
 
-AssertXMapper.AllAreValidInAssembly(Assembly.Load("AnotherAssembly")); 
+AssertXMapper.AllAreValidInAssembly(Assembly.Load("AnotherAssembly"), TestCases.All); 
 
-AssertXMapper.AllAreValidInAssemblies(Assembly.Load("MyAssembly1"), Assembly.Load("MyAssembly2"));
+AssertXMapper.AllAreValidInAssemblies(new [] { Assembly.Load("MyAssembly1"), Assembly.Load("MyAssembly2") }, TestCases.All);
 
 
 // or only validate specific mappers:
 
-AssertXMapper.IsValid(mapper);
+AssertXMapper.IsValid(mapper, TestCases.All);
 
-mapper.IsValid(); // extension method
+mapper.IsValid(TestCases.All)); // extension method
 ```
+In your editor, hover the `TestCases` enum values to find out more about its options.

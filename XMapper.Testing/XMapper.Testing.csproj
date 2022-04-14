@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Version>2.0.0</Version>
     <TargetFramework>net5.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -16,6 +17,7 @@
     <PackageTags>automapper; Mapster; XMapper; object; mapper; object-to-object; objects; property; properties; member; members; mapping; c#; .net; test; tests; testing; unit; XMapper.Test; XMapper.Tests; XMapper.Testing</PackageTags>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <AnalysisLevel>latest</AnalysisLevel>
+    <PackageReleaseNotes>See CHANGELOG.md at GitHub for release notes.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="XMapper" Version="1.0.1" />
+    <PackageReference Include="XMapper" Version="2.0.0" />
   </ItemGroup>
 
 </Project>
