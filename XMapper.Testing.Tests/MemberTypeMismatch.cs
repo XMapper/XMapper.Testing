@@ -18,7 +18,7 @@ public class MemberTypeMismatch
     public void NotNull()
     {
         var mapper = new XMapper<DummyA, DummyB>(PropertyList.Source);
-        var ex = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.All));
+        var ex = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.NotNullDefaults));
         Assert.Contains("type 'System.String' cannot be converted to type 'System.Int32'.", ex.ToString());
     }
 

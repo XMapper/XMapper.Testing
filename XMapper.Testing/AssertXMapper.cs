@@ -21,59 +21,56 @@ public static class AssertXMapper
 
         if (testCases.HasFlag(TestCases.NotNullDefaults))
         {
-            for (var i = 0; i < (testCases.HasFlag(TestCases.TargetReferenceTypeMembersNull) ? 2 : 1); i++)
-            {
-                var sourceWithoutNulls = new TSource();
-                foreach (var propertyInfo in typeof(TSource).GetRuntimeProperties())
-                {
-                    var underlyingType = Nullable.GetUnderlyingType(propertyInfo.PropertyType!);
-                    if (underlyingType != null)
-                    {
-                        propertyInfo.SetValue(sourceWithoutNulls, Activator.CreateInstance(underlyingType));
-                    }
-                    else if (propertyInfo.PropertyType == typeof(string))
-                    {
-                        propertyInfo.SetValue(sourceWithoutNulls, "");
-                    }
-                    else if (propertyInfo.PropertyType is object)
-                    {
-                        propertyInfo.SetValue(sourceWithoutNulls, Activator.CreateInstance(propertyInfo.PropertyType));
-                    }
-                }
+            mapper.Map(GetWithoutNulls<TSource>());
+        }
 
-                if (i == 0)
-                {
-                    mapper.Map(sourceWithoutNulls);
-                }
-                else
-                {
-                    var targetWithReferenceTypeMembersNull = new TTarget();
-                    foreach (var propertyInfo in typeof(TTarget).GetRuntimeProperties())
-                    {
-                        if (propertyInfo.PropertyType is object)
-                        {
-                            propertyInfo.SetValue(targetWithReferenceTypeMembersNull, null);
-                        }
-                    }
-                    mapper.Map(sourceWithoutNulls, targetWithReferenceTypeMembersNull);
-                }
-            }
-
+        if (testCases.HasFlag(TestCases.TargetReferenceTypeMembersNull))
+        {
+            mapper.Map(GetWithoutNulls<TSource>(), GetWithNulls<TTarget>());
         }
 
         if (testCases.HasFlag(TestCases.NullDefaults))
         {
-            var sourceWithoutNulls = new TSource();
-            foreach (var propertyInfo in typeof(TSource).GetRuntimeProperties())
-            {
-                var underlyingType = Nullable.GetUnderlyingType(propertyInfo.PropertyType!);
-                if (underlyingType != null || propertyInfo.PropertyType is object)
-                {
-                    propertyInfo.SetValue(sourceWithoutNulls, null);
-                }
-            }
-            mapper.Map(sourceWithoutNulls);
+            mapper.Map(GetWithNulls<TSource>());
         }
+    }
+
+    private static TClass GetWithNulls<TClass>() where TClass : class, new()
+    {
+        var objectWithNulls = new TClass();
+        foreach (var propertyInfo in typeof(TClass).GetRuntimeProperties())
+        {
+            var underlyingType = Nullable.GetUnderlyingType(propertyInfo.PropertyType!);
+            if (underlyingType != null || propertyInfo.PropertyType is object)
+            {
+                propertyInfo.SetValue(objectWithNulls, null);
+            }
+        }
+
+        return objectWithNulls;
+    }
+
+    private static TClass GetWithoutNulls<TClass>() where TClass : class, new()
+    {
+        var objectWithoutNulls = new TClass();
+        foreach (var propertyInfo in typeof(TClass).GetRuntimeProperties())
+        {
+            var underlyingType = Nullable.GetUnderlyingType(propertyInfo.PropertyType!);
+            if (underlyingType != null)
+            {
+                propertyInfo.SetValue(objectWithoutNulls, Activator.CreateInstance(underlyingType));
+            }
+            else if (propertyInfo.PropertyType == typeof(string))
+            {
+                propertyInfo.SetValue(objectWithoutNulls, "");
+            }
+            else if (propertyInfo.PropertyType is object)
+            {
+                propertyInfo.SetValue(objectWithoutNulls, Activator.CreateInstance(propertyInfo.PropertyType));
+            }
+        }
+
+        return objectWithoutNulls;
     }
 
     /// <summary>

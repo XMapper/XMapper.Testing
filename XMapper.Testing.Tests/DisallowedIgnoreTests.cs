@@ -18,19 +18,22 @@ public class DisallowedIgnoreTests
     [Fact]
     public void IgnoreSourceProperty_while_PropertyList_is_Target()
     {
-        Assert.Throws<Exception>(() =>
+        var ex = Assert.Throws<Exception>(() =>
             new XMapper<DummyA, DummyB>(PropertyList.Target)
                 .IgnoreSourceProperty(x => x.XStringA)
                 .IsValid(TestCases.AppDefaults));
+        Assert.Contains("Use 'IgnoreTargetProperty' if PropertyList is Target.", ex.Message);
     }
 
     [Fact]
     public void IgnoreTargetProperty_while_PropertyList_is_Target()
     {
-        Assert.Throws<Exception>(() =>
+        var ex = Assert.Throws<Exception>(() =>
             new XMapper<DummyA, DummyB>(PropertyList.Source)
                 .IgnoreTargetProperty(x => x.XStringA)
                 .IsValid(TestCases.AppDefaults));
+        Assert.Contains("Use 'IgnoreSourceProperty' if PropertyList is Source.", ex.Message);
+
     }
 
     [Theory]

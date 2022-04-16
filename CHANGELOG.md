@@ -1,3 +1,8 @@
+## [2.0.2] 2022-04-16
+
+- Make `TestCases.TargetReferenceTypeMembersNull` independent of `TestCases.NotNullDefaults`.
+
+
 ## [2.0.1] 2022-04-16
 
 - Bump version of XMapper.
