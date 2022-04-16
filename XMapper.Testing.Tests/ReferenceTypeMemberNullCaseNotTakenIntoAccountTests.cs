@@ -11,7 +11,7 @@ public class ReferenceTypeMemberNullCaseNotTakenIntoAccountTests
 
     public class DummyB
     {
-        public MemberB? TheMember { get; set; }
+        public MemberB? TheMember { get; set; } = new();
     }
 
     public class MemberA { }
@@ -27,7 +27,7 @@ public class ReferenceTypeMemberNullCaseNotTakenIntoAccountTests
 
         var exception = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.All));
 
-        Assert.Contains("Argument 'target' in 'XMapper<MemberA, MemberB>.Map(...)' should not be null.", exception.Message);
+        Assert.Contains("in 'XMapper<MemberA, MemberB>.Map(...)' should not be null.", exception.Message);
     }
 
     [Fact]

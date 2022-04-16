@@ -1,6 +1,7 @@
 ## [2.0.1] 2022-04-16
 
 - Bump version of XMapper.
+- Add one more test case for nullability of non-enumerable reference type members of the target.
 
 
 ## [2.0.0] 2022-04-14

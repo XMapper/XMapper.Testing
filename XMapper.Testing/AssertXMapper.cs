@@ -21,24 +21,44 @@ public static class AssertXMapper
 
         if (testCases.HasFlag(TestCases.NotNullDefaults))
         {
-            var sourceWithoutNulls = new TSource();
-            foreach (var propertyInfo in typeof(TSource).GetRuntimeProperties())
+            for (var i = 0; i < (testCases.HasFlag(TestCases.TargetReferenceTypeMembersNull) ? 2 : 1); i++)
             {
-                var underlyingType = Nullable.GetUnderlyingType(propertyInfo.PropertyType!);
-                if (underlyingType != null)
+                var sourceWithoutNulls = new TSource();
+                foreach (var propertyInfo in typeof(TSource).GetRuntimeProperties())
                 {
-                    propertyInfo.SetValue(sourceWithoutNulls, Activator.CreateInstance(underlyingType));
+                    var underlyingType = Nullable.GetUnderlyingType(propertyInfo.PropertyType!);
+                    if (underlyingType != null)
+                    {
+                        propertyInfo.SetValue(sourceWithoutNulls, Activator.CreateInstance(underlyingType));
+                    }
+                    else if (propertyInfo.PropertyType == typeof(string))
+                    {
+                        propertyInfo.SetValue(sourceWithoutNulls, "");
+                    }
+                    else if (propertyInfo.PropertyType is object)
+                    {
+                        propertyInfo.SetValue(sourceWithoutNulls, Activator.CreateInstance(propertyInfo.PropertyType));
+                    }
                 }
-                else if (propertyInfo.PropertyType == typeof(string))
+
+                if (i == 0)
                 {
-                    propertyInfo.SetValue(sourceWithoutNulls, "");
+                    mapper.Map(sourceWithoutNulls);
                 }
-                else if (propertyInfo.PropertyType is object)
+                else
                 {
-                    propertyInfo.SetValue(sourceWithoutNulls, Activator.CreateInstance(propertyInfo.PropertyType));
+                    var targetWithReferenceTypeMembersNull = new TTarget();
+                    foreach (var propertyInfo in typeof(TTarget).GetRuntimeProperties())
+                    {
+                        if (propertyInfo.PropertyType is object)
+                        {
+                            propertyInfo.SetValue(targetWithReferenceTypeMembersNull, null);
+                        }
+                    }
+                    mapper.Map(sourceWithoutNulls, targetWithReferenceTypeMembersNull);
                 }
             }
-            mapper.Map(sourceWithoutNulls);
+
         }
 
         if (testCases.HasFlag(TestCases.NullDefaults))
@@ -136,7 +156,7 @@ public static class AssertXMapper
 }
 
 /// <summary>
-/// What property values should be used for the members of the source object? If multiple options are chosen, multiple test runs will be done. The option <see cref="All"/> is strictest and safest.
+/// What property values should be used for the members of the source and target object? If multiple options are chosen, multiple test runs will be done. The option <see cref="All"/> is strictest and safest.
 /// </summary>
 [Flags]
 public enum TestCases
@@ -154,7 +174,11 @@ public enum TestCases
     /// </summary>
     NullDefaults = 4,
     /// <summary>
+    /// Uses <see cref="NotNullDefaults"/> for source, but makes  target's reference type member properties null.
+    /// </summary>
+    TargetReferenceTypeMembersNull = 8,
+    /// <summary>
     /// Strict test. Runs all cases.
     /// </summary>
-    All = AppDefaults | NotNullDefaults | NullDefaults,
+    All = AppDefaults | NotNullDefaults | NullDefaults | TargetReferenceTypeMembersNull,
 }
