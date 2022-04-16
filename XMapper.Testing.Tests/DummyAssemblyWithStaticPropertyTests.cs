@@ -10,6 +10,6 @@ public class DummyAssemblyWithStaticPropertyTests
         var exception = Assert.ThrowsAny<Exception>(() =>
             AssertXMapper.AllAreValidInAssembly("DummyAssembly2", TestCases.All));
         Assert.Contains("DummyAssembly2.Class1.MapperProperty", exception.Message);
-        Assert.Contains("Property 'XString' was not found on target.", exception.Message);
+        Assert.Contains("Property 'XString' was not found on target 'DummyB'.", exception.Message);
     }
 }

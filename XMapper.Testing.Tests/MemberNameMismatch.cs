@@ -20,14 +20,16 @@ public class MemberNameMismatch
     public void PropertyList_Source()
     {
         var mapper = new XMapper<DummyA, DummyB>(PropertyList.Source);
-        Assert.Throws<Exception>(() => mapper.IsValid(TestCases.AppDefaults));
+        var ex = Assert.Throws<Exception>(() => mapper.IsValid(TestCases.AppDefaults));
+        Assert.Contains("Property 'XStringA2' was not found on target 'DummyB'.", ex.Message);
     }
 
     [Fact]
     public void PropertyList_Target()
     {
         var mapper = new XMapper<DummyA, DummyB>(PropertyList.Target);
-        Assert.Throws<Exception>(() => mapper.IsValid(TestCases.AppDefaults));
+        var ex = Assert.Throws<Exception>(() => mapper.IsValid(TestCases.AppDefaults));
+        Assert.Contains("Property 'XStringB2' was not found on source 'DummyA'.", ex.Message);
     }
 
     [Fact]

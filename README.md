@@ -16,10 +16,11 @@ using XMapper;
 
 namespace DummyAssembly1;
 
-public class Class1
-{
+public class Class1 // An example of an incomplete setup: DummyB.XStringB has no match.
+{ 
     public static XMapper<DummyA, DummyB> MapperField =
-        new XMapper<DummyA, DummyB>(PropertyList.Target); // Should fail: DummyB.XString has no match.
+        new XMapper<DummyA, DummyB>(PropertyList.Target)
+        .IgnoreTargetProperty(x => x.XStringA);
 }
 
 public class DummyA
@@ -30,7 +31,8 @@ public class DummyA
 public class DummyB
 {
     public int XInt { get; set; } = 2;
-    public string XString { get; set; } = "B";
+    public string XStringA { get; set; } = "A";
+    public string XStringB { get; set; } = "B";
 }
 ```
 
@@ -71,5 +73,10 @@ AssertXMapper.AllAreValidInAssemblies(new [] { Assembly.Load("MyAssembly1"), Ass
 AssertXMapper.IsValid(mapper, TestCases.All);
 
 mapper.IsValid(TestCases.All)); // extension method
+
+
+// or specify only specific test cases from the TestCases flags enum:
+AssertXMapper.AllAreValidInAssembly("Project1", TestCases.NullDefaults | TestCases.NotNullDefaults);
 ```
-In your editor, hover the `TestCases` enum values to find out more about its options.
+
+Hovering over methods and `TestCases` enum values in your editor will provide guiding documentation.

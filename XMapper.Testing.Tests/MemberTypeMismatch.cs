@@ -19,8 +19,7 @@ public class MemberTypeMismatch
     {
         var mapper = new XMapper<DummyA, DummyB>(PropertyList.Source);
         var ex = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.All));
-        Assert.Contains("'System.String'", ex.ToString());
-        Assert.Contains("'System.Int32'", ex.ToString());
+        Assert.Contains("type 'System.String' cannot be converted to type 'System.Int32'.", ex.ToString());
     }
 
     public class DummyC
@@ -38,8 +37,7 @@ public class MemberTypeMismatch
     {
         var mapper = new XMapper<DummyC, DummyD>(PropertyList.Source);
         var ex = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.NotNullDefaults));
-        Assert.Contains("'System.String'", ex.ToString());
-        Assert.Contains("System.Int32", ex.ToString());
+        Assert.Contains("type 'System.Int32' cannot be converted to type 'System.String'.", ex.ToString());
     }
 
     public class DummyE
@@ -57,8 +55,7 @@ public class MemberTypeMismatch
     {
         var mapper = new XMapper<DummyE, DummyF>(PropertyList.Source);
         var ex = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.NotNullDefaults));
-        Assert.Contains("'System.String'", ex.ToString());
-        Assert.Contains("System.Int32", ex.ToString());
+        Assert.Contains("type 'System.String' cannot be converted to type 'System.Nullable`1[System.Int32]'.", ex.ToString());
     }
 
     public class DummyG
