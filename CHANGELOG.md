@@ -1,3 +1,8 @@
+## [2.0.1] 2022-04-16
+
+- Bump version of XMapper.
+
+
 ## [2.0.0] 2022-04-14
 
 ### Changed

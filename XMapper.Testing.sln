@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{22BABC6B-9DFE-42EA-9AE7-3361699E2B31}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		CHANGELOG.md = CHANGELOG.md
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -20,9 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DummyAssembliesForTests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DummyAssembly1", "DummyAssembliesForTests\DummyAssembly1\DummyAssembly1.csproj", "{4A973582-CEBB-4DF7-8357-3D3D12051F20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyAssembly2", "DummyAssembliesForTests\DummyAssembly2\DummyAssembly2.csproj", "{66A1559C-A17E-447C-AA02-A078B66CAEF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DummyAssembly2", "DummyAssembliesForTests\DummyAssembly2\DummyAssembly2.csproj", "{66A1559C-A17E-447C-AA02-A078B66CAEF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyAssembly3", "DummyAssembliesForTests\DummyAssembly3\DummyAssembly3.csproj", "{C18686F3-E094-4BDD-ADF0-8362B03F9736}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DummyAssembly3", "DummyAssembliesForTests\DummyAssembly3\DummyAssembly3.csproj", "{C18686F3-E094-4BDD-ADF0-8362B03F9736}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
