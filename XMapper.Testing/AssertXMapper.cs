@@ -24,7 +24,7 @@ public static class AssertXMapper
             mapper.Map(GetWithoutNulls<TSource>());
         }
 
-        if (testCases.HasFlag(TestCases.TargetReferenceTypeMembersNull))
+        if (testCases.HasFlag(TestCases.TargetNullDefaults))
         {
             mapper.Map(GetWithoutNulls<TSource>(), GetWithNulls<TTarget>());
         }
@@ -40,8 +40,8 @@ public static class AssertXMapper
         var objectWithNulls = new TClass();
         foreach (var propertyInfo in typeof(TClass).GetRuntimeProperties())
         {
-            var underlyingType = Nullable.GetUnderlyingType(propertyInfo.PropertyType!);
-            if (underlyingType != null || propertyInfo.PropertyType is object)
+            if (Nullable.GetUnderlyingType(propertyInfo.PropertyType!) != null
+                || new NullabilityInfoContext().Create(propertyInfo).WriteState == NullabilityState.Nullable)
             {
                 propertyInfo.SetValue(objectWithNulls, null);
             }
@@ -171,11 +171,11 @@ public enum TestCases
     /// </summary>
     NullDefaults = 4,
     /// <summary>
-    /// Uses <see cref="NotNullDefaults"/> for source, but makes  target's reference type member properties null.
+    /// Uses <see cref="NotNullDefaults"/> for source, but sets  target's nullable properties to null. This test case signals invalid custom mappings of reference types.
     /// </summary>
-    TargetReferenceTypeMembersNull = 8,
+    TargetNullDefaults = 8,
     /// <summary>
     /// Strict test. Runs all cases.
     /// </summary>
-    All = AppDefaults | NotNullDefaults | NullDefaults | TargetReferenceTypeMembersNull,
+    All = AppDefaults | NotNullDefaults | NullDefaults | TargetNullDefaults,
 }

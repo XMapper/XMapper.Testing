@@ -75,4 +75,57 @@ public class MemberTypeMismatch
         var ex = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.NullDefaults));
         Assert.Contains("'DummyG.XInt' was null, but 'DummyH.XInt' is not nullable.", ex.ToString());
     }
+
+    public class DummyI
+    {
+        public string? XString { get; set; }
+    }
+
+    public class DummyJ
+    {
+        public string XString { get; set; } = "";
+    }
+
+    [Fact]
+    public void StrictStringNullCheck()
+    {
+        var mapper = new XMapper<DummyI, DummyJ>(PropertyList.Source);
+        var ex = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.NullDefaults));
+        Assert.Contains("'DummyI.XString' was null, but 'DummyJ.XString' is not nullable.", ex.ToString());
+    }
+
+    public class DummyK
+    {
+        public MySharedMemberType? MySharedMemberType { get; set; }
+    }
+    public class DummyL
+    {
+        public MySharedMemberType MySharedMemberType { get; set; } = new();
+    }
+    public class MySharedMemberType { }
+
+    [Fact]
+    public void StrictReferenceTypeNullCheck()
+    {
+        var mapper = new XMapper<DummyK, DummyL>(PropertyList.Source);
+        var ex = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.NullDefaults));
+        Assert.Contains("'DummyK.MySharedMemberType' was null, but 'DummyL.MySharedMemberType' is not nullable.", ex.ToString());
+    }
+
+    public class DummyM
+    {
+        public string? XString { get; set; }
+    }
+
+    public class DummyN
+    {
+        public string? XString { get; set; }
+    }
+
+    [Fact]
+    public void ValidNullableString()
+    {
+        var mapper = new XMapper<DummyM, DummyN>(PropertyList.Source);
+        Does.NotThrow(() => mapper.IsValid(TestCases.All));
+    }
 }

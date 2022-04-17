@@ -1,3 +1,11 @@
+
+## [3.0.0] 2022-04-17
+
+- Rename `TestCases.TargetReferenceTypeMembersNull` to `TestCases.TargetNullDefaults`.
+- Use `NullabilityInfoContext` to verify whether a reference type is nullable and do not test the case that a not-nullable reference type is null.
+- Use .NET 6 instead of .NET 5 (for `NullabilityInfoContext`).
+
+
 ## [2.0.2] 2022-04-16
 
 - Make `TestCases.TargetReferenceTypeMembersNull` independent of `TestCases.NotNullDefaults`.

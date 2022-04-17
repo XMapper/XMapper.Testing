@@ -20,24 +20,18 @@ public class ReferenceTypeMemberNullCaseNotTakenIntoAccountTests
 
     [Theory]
     [InlineData(TestCases.NullDefaults)]
-    [InlineData(TestCases.TargetReferenceTypeMembersNull)]
+    [InlineData(TestCases.TargetNullDefaults)]
 
     public void NonEnumerable_Invalid_1(TestCases testCases)
     {
         var mXm = new XMapper<MemberA, MemberB>(PropertyList.Target);
         var mapper = new XMapper<DummyA, DummyB>(PropertyList.Target)
+            .IgnoreTargetProperty(x => x.TheMember)
             .IncludeAction((source, target) => mXm.Map(source.TheMember!, target.TheMember!));
 
         var exception = Assert.ThrowsAny<Exception>(() => mapper.IsValid(testCases));
 
-        if (testCases == TestCases.NullDefaults)
-        {
-            Assert.Contains("Argument 'source' in 'XMapper<MemberA, MemberB>.Map(...)' should not be null.", exception.Message);
-        }
-        else
-        {
-            Assert.Contains("Argument 'target' in 'XMapper<MemberA, MemberB>.Map(...)' should not be null.", exception.Message);
-        }
+        Assert.Contains("in 'XMapper<MemberA, MemberB>.Map(...)' should not be null.", exception.Message);
     }
 
     [Fact]
@@ -45,6 +39,7 @@ public class ReferenceTypeMemberNullCaseNotTakenIntoAccountTests
     {
         var mXm = new XMapper<MemberA, MemberB>(PropertyList.Target);
         var mapper = new XMapper<DummyA, DummyB>(PropertyList.Target)
+            .IgnoreTargetProperty(x => x.TheMember)
             .IncludeAction((source, target) => mXm.Map(source.TheMember!, target.TheMember ??= new()));
 
         var exception = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.NullDefaults));
@@ -57,6 +52,7 @@ public class ReferenceTypeMemberNullCaseNotTakenIntoAccountTests
     {
         var mXm = new XMapper<MemberA, MemberB>(PropertyList.Target);
         var mapper = new XMapper<DummyA, DummyB>(PropertyList.Target)
+            .IgnoreTargetProperty(x => x.TheMember)
             .IncludeAction((source, target) =>
             {
                 if (source.TheMember == null)
@@ -69,7 +65,7 @@ public class ReferenceTypeMemberNullCaseNotTakenIntoAccountTests
                 }
             });
 
-        var exception = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.TargetReferenceTypeMembersNull));
+        var exception = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.TargetNullDefaults));
 
         Assert.Contains("Argument 'target' in 'XMapper<MemberA, MemberB>.Map(...)' should not be null.", exception.Message);
     }
@@ -79,6 +75,7 @@ public class ReferenceTypeMemberNullCaseNotTakenIntoAccountTests
     {
         var mXm = new XMapper<MemberA, MemberB>(PropertyList.Target);
         var mapper = new XMapper<DummyA, DummyB>(PropertyList.Target)
+            .IgnoreTargetProperty(x => x.TheMember)
             .IncludeAction((source, target) =>
             {
                 if (source.TheMember == null)

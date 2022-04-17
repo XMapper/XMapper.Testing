@@ -76,7 +76,7 @@ mapper.IsValid(TestCases.All)); // extension method
 
 
 // or specify only specific test cases from the TestCases flags enum:
-AssertXMapper.AllAreValidInAssembly("Project1", TestCases.NullDefaults | TestCases.NotNullDefaults | TestCases.TargetReferenceTypeMembersNull);
+AssertXMapper.AllAreValidInAssembly("Project1", TestCases.NullDefaults | TestCases.NotNullDefaults | TestCases.TargetNullDefaults);
 ```
 
 Hovering over methods and `TestCases` enum values in your editor will provide guiding documentation.
