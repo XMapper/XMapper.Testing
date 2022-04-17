@@ -4,7 +4,7 @@ Automate the testing of all your object-to-object mappers with one line of unit 
     <img src="https://avatars.githubusercontent.com/u/103217522?s=150&v=4" alt="XMapper logo"/>
 </p>
 
-Available via NuGet.
+Available via [NuGet](https://www.nuget.org/packages/XMapper.Testing).
 
 For more information about creating and using a mapper, see [XMapper](https://github.com/XMapper/XMapper).
 
