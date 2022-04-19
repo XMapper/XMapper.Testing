@@ -1,9 +1,16 @@
 ﻿using System;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace XMapper.Testing.Tests;
 public class MemberTypeMismatch
 {
+    private readonly XMapperValidator _validator;
+
+    public MemberTypeMismatch(ITestOutputHelper testOutputHelper)
+    {
+        _validator = new XMapperValidator(testOutputHelper.WriteLine);
+    }
     public class DummyA
     {
         public string XString { get; set; } = "";
@@ -18,7 +25,7 @@ public class MemberTypeMismatch
     public void NotNull()
     {
         var mapper = new XMapper<DummyA, DummyB>(PropertyList.Source);
-        var ex = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.NotNullDefaults));
+        var ex = Assert.ThrowsAny<Exception>(() => _validator.IsValid(mapper, TestCases.NotNullDefaults));
         Assert.Contains("type 'System.String' cannot be converted to type 'System.Int32'.", ex.ToString());
     }
 
@@ -36,7 +43,7 @@ public class MemberTypeMismatch
     public void NullIntSource()
     {
         var mapper = new XMapper<DummyC, DummyD>(PropertyList.Source);
-        var ex = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.NotNullDefaults));
+        var ex = Assert.ThrowsAny<Exception>(() => _validator.IsValid(mapper, TestCases.NotNullDefaults));
         Assert.Contains("type 'System.Int32' cannot be converted to type 'System.String'.", ex.ToString());
     }
 
@@ -54,7 +61,7 @@ public class MemberTypeMismatch
     public void NullStringSource()
     {
         var mapper = new XMapper<DummyE, DummyF>(PropertyList.Source);
-        var ex = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.NotNullDefaults));
+        var ex = Assert.ThrowsAny<Exception>(() => _validator.IsValid(mapper, TestCases.NotNullDefaults));
         Assert.Contains("type 'System.String' cannot be converted to type 'System.Nullable`1[System.Int32]'.", ex.ToString());
     }
 
@@ -72,7 +79,7 @@ public class MemberTypeMismatch
     public void StrictNullCheck()
     {
         var mapper = new XMapper<DummyG, DummyH>(PropertyList.Source);
-        var ex = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.NullDefaults));
+        var ex = Assert.ThrowsAny<Exception>(() => _validator.IsValid(mapper, TestCases.NullDefaults));
         Assert.Contains("'DummyG.XInt' was null, but 'DummyH.XInt' is not nullable.", ex.ToString());
     }
 
@@ -90,7 +97,7 @@ public class MemberTypeMismatch
     public void StrictStringNullCheck()
     {
         var mapper = new XMapper<DummyI, DummyJ>(PropertyList.Source);
-        var ex = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.NullDefaults));
+        var ex = Assert.ThrowsAny<Exception>(() => _validator.IsValid(mapper, TestCases.NullDefaults));
         Assert.Contains("'DummyI.XString' was null, but 'DummyJ.XString' is not nullable.", ex.ToString());
     }
 
@@ -108,8 +115,15 @@ public class MemberTypeMismatch
     public void StrictReferenceTypeNullCheck()
     {
         var mapper = new XMapper<DummyK, DummyL>(PropertyList.Source);
-        var ex = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.NullDefaults));
+        var ex = Assert.ThrowsAny<Exception>(() => _validator.IsValid(mapper, TestCases.NullDefaults));
         Assert.Contains("'DummyK.MySharedMemberType' was null, but 'DummyL.MySharedMemberType' is not nullable.", ex.ToString());
+    }
+
+    [Fact]
+    public void ValidNonNullableReferenceTypeMapping()
+    {
+        var mapper = new XMapper<DummyL, DummyL>(PropertyList.Source);
+        Does.NotThrow(() => _validator.IsValid(mapper, TestCases.All));
     }
 
     public class DummyM
@@ -126,6 +140,7 @@ public class MemberTypeMismatch
     public void ValidNullableString()
     {
         var mapper = new XMapper<DummyM, DummyN>(PropertyList.Source);
-        Does.NotThrow(() => mapper.IsValid(TestCases.All));
+
+        Does.NotThrow(() => _validator.IsValid(mapper, TestCases.All));
     }
 }

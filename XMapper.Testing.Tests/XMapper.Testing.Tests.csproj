@@ -24,6 +24,7 @@
     <ProjectReference Include="..\DummyAssembliesForTests\DummyAssembly1\DummyAssembly1.csproj" />
     <ProjectReference Include="..\DummyAssembliesForTests\DummyAssembly2\DummyAssembly2.csproj" />
     <ProjectReference Include="..\DummyAssembliesForTests\DummyAssembly3\DummyAssembly3.csproj" />
+    <ProjectReference Include="..\DummyAssembliesForTests\DummyAssembly4\DummyAssembly4.csproj" />
     <ProjectReference Include="..\XMapper.Testing\XMapper.Testing.csproj" />
   </ItemGroup>
 

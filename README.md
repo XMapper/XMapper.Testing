@@ -10,7 +10,7 @@ For more information about creating and using a mapper, see [XMapper](https://gi
 
 ## Example
 
-1. Define your mappers as static fields or static properties:
+1. Assign your mappers to static fields or static properties:
 ```csharp
 using XMapper;
 
@@ -18,7 +18,7 @@ namespace DummyAssembly1;
 
 public class Class1 // An example of an incomplete setup: DummyB.XStringB has no match.
 { 
-    public static XMapper<DummyA, DummyB> MapperField =
+    public static readonly XMapper<DummyA, DummyB> MapperField =
         new XMapper<DummyA, DummyB>(PropertyList.Target)
         .IgnoreTargetProperty(x => x.XStringA);
 }
@@ -40,43 +40,57 @@ public class DummyB
 ```csharp
 using XMapper.Testing;
 using Xunit;
+using Xunit.Abstractions;
 
 public class MyXMapperTests
 {
+    private readonly ITestOutputHelper _testOutputHelper;
+    public MyXMapperTests(ITestOutputHelper testOutputHelper)
+    {
+        _testOutputHelper = testOutputHelper;
+    }
+
     [Fact]
     public void AllAreValid()
     {
-        AssertXMapper.AllAreValidInAssembly("DummyAssembly1", TestCases.All);
+        new XMapperValidator(_testOutputHelper.WriteLine).AllAreValidInAssembly("DummyAssembly1", TestCases.All);
     }
 }
-
 ```
+In case the unit test passes, the `Standard Output` in `Visual Studio`'s `Test Explorer` will show something like:
+
+    Start collecting XMapper instance storage locations (static fields/properties).
+    Found 2 XMapper instance storage locations to test.
+    Validating 'DummyAssembly4.Class1.MyValidMapper1'.
+    Test case: AppDefaults
+    Test case: NotNullDefaults
+    Test case: TargetNullDefaults
+    Test case: NullDefaults
+    Validating 'DummyAssembly4.Class1.MyValidMapper2'.
+    Test case: AppDefaults
+    Test case: NotNullDefaults
+    Test case: TargetNullDefaults
+    Test case: NullDefaults
+    Finished validating all XMapper instances.
 
 ## All assert options
 ```csharp
-using XMapper.Testing;
 
+AllAreValidInAssembly("Project1", TestCases.All);
 
-// and inside a unit test method, call one of these:
+AllAreValidInAssemblies(new [] { "MyProject1", "MyProject2" }, TestCases.All);
 
-AssertXMapper.AllAreValidInAssembly("Project1", TestCases.All);
+AllAreValidInAssembly(Assembly.Load("AnotherAssembly"), TestCases.All); 
 
-AssertXMapper.AllAreValidInAssemblies(new [] { "MyProject1", "MyProject2" }, TestCases.All);
-
-AssertXMapper.AllAreValidInAssembly(Assembly.Load("AnotherAssembly"), TestCases.All); 
-
-AssertXMapper.AllAreValidInAssemblies(new [] { Assembly.Load("MyAssembly1"), Assembly.Load("MyAssembly2") }, TestCases.All);
+AllAreValidInAssemblies(new [] { Assembly.Load("MyAssembly1"), Assembly.Load("MyAssembly2") }, TestCases.All);
 
 
 // or only validate specific mappers:
-
-AssertXMapper.IsValid(mapper, TestCases.All);
-
-mapper.IsValid(TestCases.All)); // extension method
+IsValid(mapper, TestCases.All);
 
 
 // or specify only specific test cases from the TestCases flags enum:
-AssertXMapper.AllAreValidInAssembly("Project1", TestCases.NullDefaults | TestCases.NotNullDefaults | TestCases.TargetNullDefaults);
+AllAreValidInAssembly("Project1", TestCases.NotNullDefaults | TestCases.TargetNullDefaults);
 ```
 
 Hovering over methods and `TestCases` enum values in your editor will provide guiding documentation.

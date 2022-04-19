@@ -3,39 +3,56 @@
 namespace XMapper.Testing;
 
 /// <summary>
-/// See the public methods of this class to see how you can validate your XMappers efficiently.
+/// <para>This class requires a logging method from your unit testing library.</para>
+/// <para>Console.WriteLine, Debug.WriteLine and Trace.WriteLine may not be supported because of parallellization.</para>
+/// <para>In case you'd like to ignore logging output, explicitly ignore it with an empty Action like `output => { }`.</para>
 /// </summary>
-public static class AssertXMapper
+public class XMapperValidator
 {
+    private readonly Action<string> Log;
+
+    /// <summary>
+    /// <para>This class requires a logging method from your unit testing library.</para>
+    /// <para>Console.WriteLine, Debug.WriteLine and Trace.WriteLine may not be supported because of parallellization.</para>
+    /// <para>In case you'd like to ignore logging output, explicitly ignore it with an empty Action like `output => { }`.</para>
+    /// </summary>
+    public XMapperValidator(Action<string> logMethod)
+    {
+        Log = logMethod;
+    }
     /// <summary>
     /// In case you don't want to validate all XMapper instances via <see cref="AllAreValidInAssemblies(string[], TestCases)"/>, you can validate a single XMapper instance via this method.
     /// </summary>
     /// <param name="mapper">The mapper you'd like to validate.</param>
     /// <param name="testCases">Specify how strict the test should be. <see cref="TestCases.All"/> is strictest.</param>
-    public static void IsValid<TSource, TTarget>(this XMapper<TSource, TTarget> mapper, TestCases testCases) where TSource : class, new() where TTarget : class, new()
+    public void IsValid<TSource, TTarget>(XMapper<TSource, TTarget> mapper, TestCases testCases) where TSource : class, new() where TTarget : class, new()
     {
         if (testCases.HasFlag(TestCases.AppDefaults))
         {
+            Log($"Test case: {TestCases.AppDefaults}");
             mapper.Map(new TSource());
         }
 
         if (testCases.HasFlag(TestCases.NotNullDefaults))
         {
+            Log($"Test case: {TestCases.NotNullDefaults}");
             mapper.Map(GetWithoutNulls<TSource>());
         }
 
         if (testCases.HasFlag(TestCases.TargetNullDefaults))
         {
+            Log($"Test case: {TestCases.TargetNullDefaults}");
             mapper.Map(GetWithoutNulls<TSource>(), GetWithNulls<TTarget>());
         }
 
         if (testCases.HasFlag(TestCases.NullDefaults))
         {
+            Log($"Test case: {TestCases.NullDefaults}");
             mapper.Map(GetWithNulls<TSource>());
         }
     }
 
-    private static TClass GetWithNulls<TClass>() where TClass : class, new()
+    private TClass GetWithNulls<TClass>() where TClass : class, new()
     {
         var objectWithNulls = new TClass();
         foreach (var propertyInfo in typeof(TClass).GetRuntimeProperties())
@@ -50,11 +67,16 @@ public static class AssertXMapper
         return objectWithNulls;
     }
 
-    private static TClass GetWithoutNulls<TClass>() where TClass : class, new()
+    private TClass GetWithoutNulls<TClass>() where TClass : class, new()
     {
         var objectWithoutNulls = new TClass();
         foreach (var propertyInfo in typeof(TClass).GetRuntimeProperties())
         {
+            if (propertyInfo.GetValue(objectWithoutNulls) != null)
+            {
+                continue;
+            }
+
             var underlyingType = Nullable.GetUnderlyingType(propertyInfo.PropertyType!);
             if (underlyingType != null)
             {
@@ -64,7 +86,11 @@ public static class AssertXMapper
             {
                 propertyInfo.SetValue(objectWithoutNulls, "");
             }
-            else if (propertyInfo.PropertyType is object)
+            else if (propertyInfo.PropertyType.IsArray)
+            {
+                propertyInfo.SetValue(objectWithoutNulls, Array.CreateInstance(propertyInfo.PropertyType.GetElementType()!, 0));
+            }
+            else
             {
                 propertyInfo.SetValue(objectWithoutNulls, Activator.CreateInstance(propertyInfo.PropertyType));
             }
@@ -79,7 +105,7 @@ public static class AssertXMapper
     /// <param name="assemblyNames">What is the C# project's display name?</param>
     /// <param name="testCases">Specify how strict the test should be. <see cref="TestCases.All"/> is strictest.</param>
     /// <exception cref="Exception">Throws at the first assembly that is not found or at the first invalid XMapper found.</exception>
-    public static void AllAreValidInAssemblies(string[] assemblyNames, TestCases testCases)
+    public void AllAreValidInAssemblies(string[] assemblyNames, TestCases testCases)
     {
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         foreach (var assemblyName in assemblyNames)
@@ -94,7 +120,7 @@ public static class AssertXMapper
     /// <summary>
     /// In case you don't want to use <see cref="AllAreValidInAssemblies(string[], TestCases)"/>, you can load and pass assemblies to this method.
     /// </summary>
-    public static void AllAreValidInAssemblies(Assembly[] assemblies, TestCases testCases)
+    public void AllAreValidInAssemblies(Assembly[] assemblies, TestCases testCases)
     {
         foreach (var assembly in assemblies)
         {
@@ -108,7 +134,7 @@ public static class AssertXMapper
     /// <param name="assemblyName">What is the C# project's display name?</param>
     /// <param name="testCases">Specify how strict the test should be. <see cref="TestCases.All"/> is strictest.</param>
     /// <exception cref="Exception">Throws if the assembly cannot be found or at the first invalid XMapper found.</exception>
-    public static void AllAreValidInAssembly(string assemblyName, TestCases testCases)
+    public void AllAreValidInAssembly(string assemblyName, TestCases testCases)
     {
         AllAreValidInAssemblies(new[] { assemblyName }, testCases);
     }
@@ -118,20 +144,31 @@ public static class AssertXMapper
     /// </summary>
     /// <param name="assembly">All the mappers inside this assembly are validated.</param>
     /// <param name="testCases">Specify how strict the test should be. <see cref="TestCases.All"/> is strictest.</param>
-    public static void AllAreValidInAssembly(Assembly assembly, TestCases testCases)
+    public void AllAreValidInAssembly(Assembly assembly, TestCases testCases)
     {
+        Log("Start collecting XMapper instance storage locations (static fields/properties).");
         var types = assembly.GetTypes();
         var staticFields = types.SelectMany(x => x.GetRuntimeFields().Where(x => x.IsStatic)).Where(x => x.FieldType.Name == "XMapper`2").ToArray();
         var staticFieldXMapperInfos = staticFields.Select(x => new StaticMemberXMapperInfo { Fullname = x.DeclaringType + "." + x.Name, GetXMapperInstance = () => x.GetValue(null) });
-        var staticProperties = types.SelectMany(x => x.GetRuntimeProperties().Where(x => x.GetMethod!.IsStatic)).Where(x => x.PropertyType.Name == "XMapper`2").ToArray();
+        var staticProperties = types.SelectMany(x => x.GetRuntimeProperties().Where(x => x.GetMethod != null && x.GetMethod.IsStatic)).Where(x => x.PropertyType.Name == "XMapper`2").ToArray();
         var staticPropertyXMapperInfos = staticProperties.Select(x => new StaticMemberXMapperInfo { Fullname = x.DeclaringType + "." + x.Name, GetXMapperInstance = () => x.GetValue(null) });
+
+        Log($"Found {staticFields.Length + staticProperties.Length} XMapper instance storage locations to test.");
+
         foreach (var xMapperInfo in staticFieldXMapperInfos.Concat(staticPropertyXMapperInfos))
         {
             try
             {
+                Log($"Validating '{xMapperInfo.Fullname}'.");
+
                 var mapper = (dynamic)xMapperInfo.GetXMapperInstance();
 
-                AssertXMapper.IsValid(mapper, testCases);
+                if (mapper == null)
+                {
+                    throw new Exception("The static field's value was null, so there was no XMapper instance to test.");
+                }
+
+                IsValid(mapper, testCases);
             }
             catch (Exception ex)
             {
@@ -141,6 +178,7 @@ public static class AssertXMapper
                 throw new Exception(message);
             }
         }
+        Log("Finished validating all XMapper instances.");
     }
 
     internal class StaticMemberXMapperInfo
@@ -162,20 +200,24 @@ public enum TestCases
     /// This test case uses a newly instantiated source object without changing any of its property values. It is not recommended to only use this test case.
     /// </summary>
     AppDefaults = 1,
+
     /// <summary>
     /// This test case uses a newly instantiated source object and sets all property values to their non-null C# type default. If a string is mistakenly mapped to an int, this test case will signal an error.
     /// </summary>
     NotNullDefaults = 2,
+
     /// <summary>
     /// This test case uses a newly instantiated source object and sets nullable properties to null. If you want to map from nullable properties to non-nullable properties, this test case signals incorrect custom mapping.
     /// </summary>
     NullDefaults = 4,
+
     /// <summary>
-    /// Uses <see cref="NotNullDefaults"/> for source, but sets  target's nullable properties to null. This test case signals invalid custom mappings of reference types.
+    /// Uses <see cref="NotNullDefaults"/> for source, but sets target's nullable properties to null. This test case signals invalid custom mappings of reference types.
     /// </summary>
     TargetNullDefaults = 8,
+
     /// <summary>
-    /// Strict test. Runs all cases.
+    /// Strict test. Runs all test cases.
     /// </summary>
     All = AppDefaults | NotNullDefaults | NullDefaults | TargetNullDefaults,
 }

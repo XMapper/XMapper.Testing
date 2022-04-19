@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DummyAssembly2", "DummyAsse
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DummyAssembly3", "DummyAssembliesForTests\DummyAssembly3\DummyAssembly3.csproj", "{C18686F3-E094-4BDD-ADF0-8362B03F9736}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyAssembly4", "DummyAssembliesForTests\DummyAssembly4\DummyAssembly4.csproj", "{5CD39E0D-0E97-42DB-BF75-3D2B03B1486E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{C18686F3-E094-4BDD-ADF0-8362B03F9736}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C18686F3-E094-4BDD-ADF0-8362B03F9736}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C18686F3-E094-4BDD-ADF0-8362B03F9736}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CD39E0D-0E97-42DB-BF75-3D2B03B1486E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CD39E0D-0E97-42DB-BF75-3D2B03B1486E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CD39E0D-0E97-42DB-BF75-3D2B03B1486E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CD39E0D-0E97-42DB-BF75-3D2B03B1486E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +65,7 @@ Global
 		{4A973582-CEBB-4DF7-8357-3D3D12051F20} = {36363602-1A71-4B7C-A1CA-3EA8DA7C6F98}
 		{66A1559C-A17E-447C-AA02-A078B66CAEF6} = {36363602-1A71-4B7C-A1CA-3EA8DA7C6F98}
 		{C18686F3-E094-4BDD-ADF0-8362B03F9736} = {36363602-1A71-4B7C-A1CA-3EA8DA7C6F98}
+		{5CD39E0D-0E97-42DB-BF75-3D2B03B1486E} = {36363602-1A71-4B7C-A1CA-3EA8DA7C6F98}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {34451791-68FC-4E49-8AD7-90007568DDE7}

@@ -1,9 +1,16 @@
 ﻿using System;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace XMapper.Testing.Tests;
 public class ReferenceTypeMemberNullCaseNotTakenIntoAccountTests
 {
+    private readonly XMapperValidator _validator;
+
+    public ReferenceTypeMemberNullCaseNotTakenIntoAccountTests(ITestOutputHelper testOutputHelper)
+    {
+        _validator = new XMapperValidator(testOutputHelper.WriteLine);
+    }
     public class DummyA
     {
         public MemberA? TheMember { get; set; }
@@ -29,7 +36,7 @@ public class ReferenceTypeMemberNullCaseNotTakenIntoAccountTests
             .IgnoreTargetProperty(x => x.TheMember)
             .IncludeAction((source, target) => mXm.Map(source.TheMember!, target.TheMember!));
 
-        var exception = Assert.ThrowsAny<Exception>(() => mapper.IsValid(testCases));
+        var exception = Assert.ThrowsAny<Exception>(() => _validator.IsValid(mapper, testCases));
 
         Assert.Contains("in 'XMapper<MemberA, MemberB>.Map(...)' should not be null.", exception.Message);
     }
@@ -42,7 +49,7 @@ public class ReferenceTypeMemberNullCaseNotTakenIntoAccountTests
             .IgnoreTargetProperty(x => x.TheMember)
             .IncludeAction((source, target) => mXm.Map(source.TheMember!, target.TheMember ??= new()));
 
-        var exception = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.NullDefaults));
+        var exception = Assert.ThrowsAny<Exception>(() => _validator.IsValid(mapper, TestCases.NullDefaults));
 
         Assert.Contains("Argument 'source' in 'XMapper<MemberA, MemberB>.Map(...)' should not be null.", exception.Message);
     }
@@ -65,7 +72,7 @@ public class ReferenceTypeMemberNullCaseNotTakenIntoAccountTests
                 }
             });
 
-        var exception = Assert.ThrowsAny<Exception>(() => mapper.IsValid(TestCases.TargetNullDefaults));
+        var exception = Assert.ThrowsAny<Exception>(() => _validator.IsValid(mapper, TestCases.TargetNullDefaults));
 
         Assert.Contains("Argument 'target' in 'XMapper<MemberA, MemberB>.Map(...)' should not be null.", exception.Message);
     }
@@ -87,6 +94,6 @@ public class ReferenceTypeMemberNullCaseNotTakenIntoAccountTests
                     mXm.Map(source.TheMember, target.TheMember ??= new());
                 }
             });
-        Does.NotThrow(() => mapper.IsValid(TestCases.All));
+        Does.NotThrow(() => _validator.IsValid(mapper, TestCases.All));
     }
 }
