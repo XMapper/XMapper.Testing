@@ -8,7 +8,7 @@
 
 ### Breaking
 
-- The static `AssertXMapper` has been replaced by a non-static `XMapperValidator` that requires an `Action<string> logMethod` that you may explicityly ignore by passing it `x => { }`.
+- The static `AssertXMapper` has been replaced by a non-static `XMapperValidator` that requires an `Action<string> logMethod` that you may explicitly ignore by passing it `x => { }`.
 
 ### Fixes
 
