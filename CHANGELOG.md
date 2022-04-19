@@ -4,7 +4,7 @@
     Only the revision number of `XMapper.Testing` is independent of `XMapper`.
 
 
-## [3.0.0] 2022-04-17
+## [3.0.1] 2022-04-19
 
 ### Breaking
 
