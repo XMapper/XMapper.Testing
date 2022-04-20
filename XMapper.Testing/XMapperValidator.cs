@@ -10,6 +10,7 @@ namespace XMapper.Testing;
 public class XMapperValidator
 {
     private readonly Action<string> Log;
+    private readonly List<string> _ignoredMapperStorageLocation = new();
 
     /// <summary>
     /// <para>This class requires a logging method from your unit testing library.</para>
@@ -20,6 +21,16 @@ public class XMapperValidator
     {
         Log = logMethod;
     }
+
+    /// <summary>
+    /// Non-static fields and properties for XMapper instances must be explicitly ignored. This is a safety check: maybe you thought the mapper would be tested but you forgot the static keyword.
+    /// </summary>
+    public XMapperValidator Ignore(string mapperStorageLocationFullname)
+    {
+        _ignoredMapperStorageLocation.Add(mapperStorageLocationFullname);
+        return this;
+    }
+
     /// <summary>
     /// In case you don't want to validate all XMapper instances via <see cref="AllAreValidInAssemblies(string[], TestCases)"/>, you can validate a single XMapper instance via this method.
     /// </summary>
@@ -148,15 +159,28 @@ public class XMapperValidator
     {
         Log("Start collecting XMapper instance storage locations (static fields/properties).");
         var types = assembly.GetTypes();
-        var staticFields = types.SelectMany(x => x.GetRuntimeFields().Where(x => x.IsStatic)).Where(x => x.FieldType.Name == "XMapper`2").ToArray();
-        var staticFieldXMapperInfos = staticFields.Select(x => new StaticMemberXMapperInfo { Fullname = x.DeclaringType + "." + x.Name, GetXMapperInstance = () => x.GetValue(null) });
-        var staticProperties = types.SelectMany(x => x.GetRuntimeProperties().Where(x => x.GetMethod != null && x.GetMethod.IsStatic)).Where(x => x.PropertyType.Name == "XMapper`2").ToArray();
-        var staticPropertyXMapperInfos = staticProperties.Select(x => new StaticMemberXMapperInfo { Fullname = x.DeclaringType + "." + x.Name, GetXMapperInstance = () => x.GetValue(null) });
+        var fields = types.SelectMany(x => x.GetRuntimeFields().Where(x => x.FieldType.Name == "XMapper`2"))
+            .Select(x => new XMapperStorageInfo { Fullname = x.DeclaringType + "." + x.Name, GetXMapperInstance = () => x.GetValue(null), IsStatic = x.IsStatic })
+            .ToArray();
+        var properties = types.SelectMany(x => x.GetRuntimeProperties().Where(x => x.PropertyType.Name == "XMapper`2"))
+            .Select(x => new XMapperStorageInfo { Fullname = x.DeclaringType + "." + x.Name, GetXMapperInstance = () => x.GetValue(null), IsStatic = x.GetMethod != null && x.GetMethod.IsStatic })
+            .ToArray();
 
-        Log($"Found {staticFields.Length + staticProperties.Length} XMapper instance storage locations to test.");
+        Log($"Found {fields.Length + properties.Length} XMapper instance storage locations to test.");
 
-        foreach (var xMapperInfo in staticFieldXMapperInfos.Concat(staticPropertyXMapperInfos))
+        foreach (var xMapperInfo in fields.Concat(properties))
         {
+            if (_ignoredMapperStorageLocation.Contains(xMapperInfo.Fullname))
+            {
+                Log($"Skipping ignored mapper '{xMapperInfo.Fullname}'");
+                continue;
+            }
+
+            if (!xMapperInfo.IsStatic)
+            {
+                throw new Exception($"'{xMapperInfo.Fullname}' is not static and also not ignored via '{nameof(XMapperValidator)}.{nameof(Ignore)}'. Mark the field/property static to include the mapper in the test or explicitly ignore it.");
+            }
+
             try
             {
                 Log($"Validating '{xMapperInfo.Fullname}'.");
@@ -181,10 +205,11 @@ public class XMapperValidator
         Log("Finished validating all XMapper instances.");
     }
 
-    internal class StaticMemberXMapperInfo
+    internal class XMapperStorageInfo
     {
 #nullable disable
         public string Fullname { get; set; }
+        public bool IsStatic { get; set; }
         public Func<object> GetXMapperInstance { get; set; }
 #nullable restore
     }
