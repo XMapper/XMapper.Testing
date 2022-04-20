@@ -3,17 +3,16 @@
     Major and minor version are a copy of the `XMapper` package's major and minor version.
     Only the revision number of `XMapper.Testing` is independent of `XMapper`.
 
-    
 ## [3.0.2] 2022-04-20
 
 - Throw if an XMapper field/propety is not static or explicitly ignore it.
 - Bump XMapper verison.
 
-## [3.0.1] 2022-04-17
+## [3.0.1] 2022-04-19
 
 ### Breaking
 
-- The static `AssertXMapper` has been replaced by a non-static `XMapperValidator` that requires an `Action<string> logMethod` that you may explicityly ignore by passing it `x => { }`.
+- The static `AssertXMapper` has been replaced by a non-static `XMapperValidator` that requires an `Action<string> logMethod` that you may explicitly ignore by passing it `x => { }`.
 
 ### Fixes
 
