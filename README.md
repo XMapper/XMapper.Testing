@@ -16,23 +16,11 @@ using XMapper;
 
 namespace DummyAssembly1;
 
-public class Class1 // An example of an incomplete setup: DummyB.XStringB has no match.
+public class Class1
 { 
-    public static readonly XMapper<DummyA, DummyB> MapperField =
+    private static readonly XMapper<DummyA, DummyB> MapperField =
         new XMapper<DummyA, DummyB>(PropertyList.Target)
-        .IgnoreTargetProperty(x => x.XStringA);
-}
-
-public class DummyA
-{
-    public int XInt { get; set; } = 1;
-}
-
-public class DummyB
-{
-    public int XInt { get; set; } = 2;
-    public string XStringA { get; set; } = "A";
-    public string XStringB { get; set; } = "B";
+        .IgnoreTargetProperty(x => x.Id);
 }
 ```
 
@@ -42,10 +30,10 @@ using XMapper.Testing;
 using Xunit;
 using Xunit.Abstractions;
 
-public class MyXMapperTests
+public class XMapperTests
 {
     private readonly ITestOutputHelper _testOutputHelper;
-    public MyXMapperTests(ITestOutputHelper testOutputHelper)
+    public XMapperTests(ITestOutputHelper testOutputHelper)
     {
         _testOutputHelper = testOutputHelper;
     }

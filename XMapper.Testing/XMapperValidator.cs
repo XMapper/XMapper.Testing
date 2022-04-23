@@ -3,9 +3,8 @@
 namespace XMapper.Testing;
 
 /// <summary>
-/// <para>This class requires a logging method from your unit testing library.</para>
+/// <para>This class requires a logging method from your unit testing library or you can explicitly ignore it with an empty Action like `output => { }`.</para>
 /// <para>Console.WriteLine, Debug.WriteLine and Trace.WriteLine may not be supported because of parallellization.</para>
-/// <para>In case you'd like to ignore logging output, explicitly ignore it with an empty Action like `output => { }`.</para>
 /// </summary>
 public class XMapperValidator
 {
@@ -13,9 +12,8 @@ public class XMapperValidator
     private readonly List<string> _ignoredMapperStorageLocation = new();
 
     /// <summary>
-    /// <para>This class requires a logging method from your unit testing library.</para>
+    /// <para>This class requires a logging method from your unit testing library or you can explicitly ignore it with an empty Action like `output => { }`.</para>
     /// <para>Console.WriteLine, Debug.WriteLine and Trace.WriteLine may not be supported because of parallellization.</para>
-    /// <para>In case you'd like to ignore logging output, explicitly ignore it with an empty Action like `output => { }`.</para>
     /// </summary>
     public XMapperValidator(Action<string> logMethod)
     {
