@@ -3,6 +3,10 @@
     Major and minor version are a copy of the `XMapper` package's major and minor version.
     Only the revision number of `XMapper.Testing` is independent of `XMapper`.
 
+## [3.0.3] 2022-04-23
+
+- Bump XMapper verison.
+
 ## [3.0.2] 2022-04-20
 
 - Throw if an XMapper field/propety is not static or explicitly ignore it.
