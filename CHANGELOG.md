@@ -5,25 +5,25 @@
 
 ## [3.0.4] 2022-04-24
 
-- Add 'NoPublicFields' test case. XMapper only maps properties, no fields. This test case can remind you of accidental mistakes (but you can turn this test case off if you really want to use public fields - knowing they will not be mapped automatically).
+- New test case added: `NoPublicFields`. XMapper only maps properties, no fields. This test case reminds you when you forget to type `{ get; set; }`. (Of course you can turn this test case off if you really want to use public fields - knowing they will not be mapped automatically.)
 
 
 ## [3.0.3] 2022-04-23
 
-- Bump XMapper verison.
+- Bump XMapper version.
 
 
 ## [3.0.2] 2022-04-20
 
-- Throw if an XMapper field/propety is not static or explicitly ignore it.
-- Bump XMapper verison.
+- At validating all mappers in an assembly, the test fails if an XMapper field/propety is not static: you should explicitly ignore it (or make it static).
+- Bump XMapper version.
 
 
 ## [3.0.1] 2022-04-19
 
 ### Breaking
 
-- The static `AssertXMapper` has been replaced by a non-static `XMapperValidator` that requires an `Action<string> logMethod` that you may explicitly ignore by passing it `x => { }`.
+- The static `AssertXMapper` has been replaced by a non-static `XMapperValidator` that requires an `Action<string> logMethod` that you may explicitly ignore by passing it `output => { }`.
 
 ### Fixes
 
@@ -59,5 +59,5 @@
 
 ### Breaking
 
-- The validation has become stricter. It not only tests with the property values that a class has immediatly after construction, but it now also has runs a test case with all nullable properties null and a test case for all not-null property values. The `TestCases` enum can be used to configure what cases to validate.
-- The `params` keyword is removed for the assemblies and assemblyNames parameters.
+- The validation has become stricter. It not only tests with the property values that a class has immediatly after construction, but it now also has a test case with all nullable properties null and a test case for all not-null property values. The `TestCases` enum can be used to configure what cases to validate.
+- The `params` keyword is removed for the `assemblies` and `assemblyNames` parameters.
