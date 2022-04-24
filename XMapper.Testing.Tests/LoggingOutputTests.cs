@@ -32,11 +32,13 @@ Test case: AppDefaults
 Test case: NotNullDefaults
 Test case: TargetNullDefaults
 Test case: NullDefaults
+Test case: NoPublicFields
 Validating 'DummyAssembly4.Class1._myValidMapper2'.
 Test case: AppDefaults
 Test case: NotNullDefaults
 Test case: TargetNullDefaults
 Test case: NullDefaults
+Test case: NoPublicFields
 Finished validating all XMapper instances.
 ", sb.ToString());
     }

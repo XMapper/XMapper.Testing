@@ -3,14 +3,21 @@
     Major and minor version are a copy of the `XMapper` package's major and minor version.
     Only the revision number of `XMapper.Testing` is independent of `XMapper`.
 
+## [3.0.4] 2022-04-24
+
+- Add 'NoPublicFields' test case. XMapper only maps properties, no fields. This test case can remind you of accidental mistakes (but you can turn this test case off if you really want to use public fields - knowing they will not be mapped automatically).
+
+
 ## [3.0.3] 2022-04-23
 
 - Bump XMapper verison.
+
 
 ## [3.0.2] 2022-04-20
 
 - Throw if an XMapper field/propety is not static or explicitly ignore it.
 - Bump XMapper verison.
+
 
 ## [3.0.1] 2022-04-19
 

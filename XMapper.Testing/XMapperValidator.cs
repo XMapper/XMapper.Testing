@@ -59,6 +59,16 @@ public class XMapperValidator
             Log($"Test case: {TestCases.NullDefaults}");
             mapper.Map(GetWithNulls<TSource>());
         }
+
+        if (testCases.HasFlag(TestCases.NoPublicFields))
+        {
+            Log($"Test case: {TestCases.NoPublicFields}");
+            var publicField = typeof(TSource).GetRuntimeFields().Concat(typeof(TTarget).GetRuntimeFields()).FirstOrDefault(x => x.IsPublic);
+            if (publicField != null)
+            {
+                throw new Exception($"'{publicField.DeclaringType}.{publicField.Name}' is a public field instead of a property. XMapper does not map fields (but ignores them silently). Because you use XMapper.Testing's test case '{nameof(TestCases.NoPublicFields)}', this exception is thrown.");
+            }
+        }
     }
 
     private TClass GetWithNulls<TClass>() where TClass : class, new()
@@ -222,25 +232,32 @@ public enum TestCases
     /// <summary>
     /// This test case uses a newly instantiated source object without changing any of its property values. It is not recommended to only use this test case.
     /// </summary>
-    AppDefaults = 1,
+    AppDefaults = 1 << 0,
 
     /// <summary>
     /// This test case uses a newly instantiated source object and sets all property values to their non-null C# type default. If a string is mistakenly mapped to an int, this test case will signal an error.
     /// </summary>
-    NotNullDefaults = 2,
+    NotNullDefaults = 1 << 1,
 
     /// <summary>
     /// This test case uses a newly instantiated source object and sets nullable properties to null. If you want to map from nullable properties to non-nullable properties, this test case signals incorrect custom mapping.
     /// </summary>
-    NullDefaults = 4,
+    NullDefaults = 1 << 2,
 
     /// <summary>
     /// Uses <see cref="NotNullDefaults"/> for source, but sets target's nullable properties to null. This test case signals invalid custom mappings of reference types.
     /// </summary>
-    TargetNullDefaults = 8,
+    TargetNullDefaults = 1 << 3,
+
+    /// <summary>
+    /// <para>Because XMapper does not map fields (just properties), you may want to verify that you don't accidentally have a (public) field on TSource or TTarget.</para> 
+    /// <para>Of course you can use public fields knowing that they are not mapped - in that case you can skip this test case via<br />
+    /// <see cref="TestCases.All"/> &#38; ~<see cref="TestCases.NoPublicFields"/>.</para>
+    /// </summary>
+    NoPublicFields = 1 << 4,
 
     /// <summary>
     /// Strict test. Runs all test cases.
     /// </summary>
-    All = AppDefaults | NotNullDefaults | NullDefaults | TargetNullDefaults,
+    All = AppDefaults | NotNullDefaults | NullDefaults | TargetNullDefaults | NoPublicFields,
 }

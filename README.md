@@ -54,11 +54,13 @@ In case the unit test passes, the `Standard Output` in `Visual Studio`'s `Test E
     Test case: NotNullDefaults
     Test case: TargetNullDefaults
     Test case: NullDefaults
+    Test case: NoPublicFields
     Validating 'DummyAssembly4.Class1.MyValidMapper2'.
     Test case: AppDefaults
     Test case: NotNullDefaults
     Test case: TargetNullDefaults
     Test case: NullDefaults
+    Test case: NoPublicFields
     Finished validating all XMapper instances.
 
 ## All assert options
@@ -73,12 +75,16 @@ AllAreValidInAssembly(Assembly.Load("AnotherAssembly"), TestCases.All);
 AllAreValidInAssemblies(new [] { Assembly.Load("MyAssembly1"), Assembly.Load("MyAssembly2") }, TestCases.All);
 
 
-// or only validate specific mappers:
-IsValid(mapper, TestCases.All);
-
-
-// or specify only specific test cases from the TestCases flags enum:
+// specify only specific test cases from the TestCases flags enum:
 AllAreValidInAssembly("Project1", TestCases.NotNullDefaults | TestCases.TargetNullDefaults);
+
+// exclude one test case:
+AllAreValidInAssembly("Project1", TestCases.All & ~TestCases.NoPublicFields);
+
+
+// only validate specific mappers:
+IsValid(MyProject1.Class1._someStaticFieldWithMapper, TestCases.All);
+
 ```
 
 Hovering over methods and `TestCases` enum values in your editor will provide guiding documentation.
